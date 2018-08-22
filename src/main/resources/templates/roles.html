@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <!--/*/<th:block th:include="fragments/head :: head"></th:block>/*/-->
+    <meta charset="UTF-8">
+    <title th:text="#{Roles}"></title>
+</head>
+<body>
+<!--/*/<th:block th:include="fragments/menuBar :: menuBar"></th:block>/*/-->
+    <div class="container">
+        <table class="table table-striped">
+            <tr>
+                <th th:text="#{roleName}"></th>
+                <th th:text="#{id}"></th>
+                <th th:text="#{Datecreated}"></th>
+                <th th:text="#{Veiw}"></th>
+                <th sec:authorize="hasAuthority('UPDATE_ROLE')" th:text="#{Edit}"></th>
+                <th sec:authorize="hasAuthority('DELETE_ROLE')" th:text="#{Delete}"></th>
+            </tr>
+
+            <tr th:each="role : ${roles}">
+                <td th:text="${role.roleName}"></td>
+                <td th:text="${role.id}"></td>
+                <td th:text="${role.dateCreated}"></td>
+                <td sec:authorize="hasAuthority('READ_ROLE')">
+                    <a class="btn btn-info" href="#" th:href="${'roleShow' + role.id}" th:text="#{Veiw}"></a>
+                </td>
+                <td sec:authorize="hasAuthority('UPDATE_ROLE')">
+                    <a class="btn btn-warning" href="#" th:href="${'roleEdit' + role.id}" th:text="#{Edit}" ></a>
+                </td>
+                <td sec:authorize="hasAuthority('DELETE_ROLE')">
+                    <a class="btn btn-danger" href="#" th:href="${'roleDelete' + role.id}" th:text="#{Delete}"></a>
+                </td>
+            </tr>
+        </table>
+        <div sec:authorize="hasAuthority('CREATE_ROLE')" class="right-container">
+            <a class="btn btn-success" href="#" th:href="@{roleNew}" th:text="#{Add}"></a>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <!--/*/<th:block th:include="fragments/head :: head"></th:block>/*/-->
+    <meta charset="UTF-8">
+    <title>user show</title>
+</head>
+<body>
+<!--/*/<th:block th:include="fragments/menuBar :: menuBar"></th:block>/*/-->
+
+<div class="container">
+
+    <table class="table table-striped">
+        <tr>
+            <th>User Name</th>
+            <th>roles</th>
+            <th>Created date</th>
+            <th>Last updated date</th>
+        </tr>
+        <tr>
+            <td th:text="${user.username}"></td>
+            <td><ul th:each="role : ${user.getRoles()}">
+                <li th:text="${role.roleName}"></li>
+            </ul></td>
+            <td th:text="${user.dateCreated}"></td>
+            <td th:text="${user.dateLastUpdated}"></td>
+        </tr>
+    </table>
+
+</div>
+
+</body>
+</html>

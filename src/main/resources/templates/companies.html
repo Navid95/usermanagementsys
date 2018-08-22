@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <!--/*/<th:block th:include="fragments/head :: head"></th:block>/*/-->
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<!--/*/<th:block th:include="fragments/menuBar :: menuBar"></th:block>/*/-->
+    <div class="container">
+        <table class="table table-striped">
+            <tr>
+                <th>Company Name</th>
+                <th>Address</th>
+                <!--<th>Admin</th>-->
+                <th>View</th>
+            </tr>
+
+            <tr th:each="company : ${companies}">
+                <td th:text="${company.name}"></td>
+                <td th:text="${company.address}"></td>
+                <!--<td th:if="${company.admin}" th:text="${company.getAdmin().getUsername()}"></td>-->
+                <td>
+                    <a class="btn btn-info" th:href="${'/company/show/' + company.id}">View</a>
+                </td>
+            </tr>
+        </table>
+        <a th:href="${'/company/listAll?page='+(pageable.getPageNumber()+1)+ '&size=1'}">Next</a>
+    </div>
+</body>
+</html>

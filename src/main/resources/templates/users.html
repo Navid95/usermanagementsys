@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <!--/*/<th:block th:include="fragments/head :: head"></th:block>/*/-->
+    <meta charset="UTF-8">
+    <title>Users</title>
+</head>
+<!--/*/<th:block th:include="fragments/menuBar :: menuBar"></th:block>/*/-->
+<body>
+    <div class="container">
+        <table class="table table-striped">
+            <tr>
+                <th>ID</th>
+                <th>User name</th>
+                <th th:text="#{Veiw}"></th>
+                <th sec:authorize="hasAuthority('UPDATE_USER')" th:text="#{Edit}"></th>
+                <th sec:authorize="hasAuthority('DELETE_USER')" th:text="#{Delete}"></th>
+            </tr>
+            <tr th:each="user : ${users}">
+                <td th:text="${user.id}"></td>
+                <td th:text="${user.username}"></td>
+                <td sec:authorize="hasAuthority('READ_USER')">
+                    <a class="btn btn-info" href="#" th:href="${'show/' + user.id}" th:text="#{Veiw}"></a>
+                </td>
+                <td sec:authorize="hasAuthority('UPDATE_USER')">
+                    <a class="btn btn-warning" href="#" th:href="${'edit/' + user.id}" th:text="#{Edit}" ></a>
+                </td>
+                <td sec:authorize="hasAuthority('DELETE_USER')">
+                    <a class="btn btn-danger" href="#" th:href="${'delete/' + user.id}" th:text="#{Delete}"></a>
+                </td>
+            </tr>
+        </table>
+        <a class="btn btn-success" sec:authorize="hasAuthority('CREATE_USER')" th:href="@{create}">New User</a>
+    </div>
+</body>
+</html>

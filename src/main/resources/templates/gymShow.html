@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <!--/*/<th:block th:include="fragments/head :: head"></th:block>/*/-->
+    <meta charset="UTF-8">
+    <title th:text="#{gymInfo}"></title>
+</head>
+<body>
+<!--/*/<th:block th:include="fragments/menuBar :: menuBar"></th:block>/*/-->
+    <div class="container">
+        <table class="table table-striped">
+            <tr>
+                <th th:text="#{gymName}"></th>
+                <th th:text="#{gymAdmin}"></th>
+                <th th:text="#{gymAddress}"></th>
+            </tr>
+            <tr>
+                <td th:text="${gym.name}"></td>
+                <td th:text="${gym.admin.username}"></td>
+                <td th:text="${gym.address}"></td>
+            </tr>
+        </table>
+    </div>
+</body>
+</html>

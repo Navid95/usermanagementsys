@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <!--/*/<th:block th:include="fragments/head :: head"></th:block>/*/-->
+</head>
+<body th:fragment="menuBar">
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="#" th:href="@{/}">User Management System</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item active" sec:authorize="hasAuthority('READ_ROLE')">
+                <a class="nav-link" href="#" th:href="@{/rolelistAll}" th:text="#{Roles}"></a>
+            </li>
+            <li class="nav-item active" sec:authorize="hasAuthority('READ_PERMISSION')">
+                <a class="nav-link" href="#" th:href="@{/permissionlistAll}" th:text="#{Permissions}"></a>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link" href="#" th:href="@{/gymlistAll}" th:text="#{nav-gyms}"></a>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link" href="#" th:href="${'/company/listAll?page=0&size=3'}" th:text="Companies"></a>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link" sec:authorize="isAnonymous()" href="#" th:href="@{/login}" th:text="#{Login}"></a>
+            </li>
+            <li class="nav-item active">
+                <form sec:authorize="isAuthenticated()" th:action="@{/logout}" method="post">
+                    <input class="btn btn-link" type="submit" th:value="#{SignOut}"/>
+                </form>
+            </li>
+
+        </ul>
+    </div>
+</nav>
+</body>
+</html>

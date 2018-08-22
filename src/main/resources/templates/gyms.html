@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <!--/*/<th:block th:include="fragments/head :: head"></th:block>/*/-->
+    <meta charset="UTF-8">
+    <title th:text="#{nav-gyms}"></title>
+</head>
+<body>
+<!--/*/<th:block th:include="fragments/menuBar :: menuBar"></th:block>/*/-->
+    <div class="container">
+
+        <table class="table table-striped">
+            <tr>
+                <th th:text="#{gymName}"></th>
+                <th th:text="#{gymAddress}"></th>
+                <th th:text="#{Veiw}"></th>
+                <th th:text="#{Edit}"></th>
+                <th th:text="#{Delete}"></th>
+            </tr>
+
+            <tr th:each="gym : ${gyms}">
+                <td th:text="${gym.name}"></td>
+                <td th:text="${gym.address}"></td>
+                <td>
+                    <a class="btn btn-info" href="#" th:href="${'gymShow' + gym.id}" th:text="#{Veiw}"></a>
+                </td>
+                <td>
+                    <a class="btn btn-warning" href="#" th:href="${'gymEdit' + gym.id}" th:text="#{Edit}"></a>
+                </td>
+                <td>
+                    <a class="btn btn-danger" href="#" th:href="${'gymDelete' + gym.id}" th:text="#{Delete}"></a>
+                </td>
+            </tr>
+        </table>
+    </div>
+</body>
+</html>

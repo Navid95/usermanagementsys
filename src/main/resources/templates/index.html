@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" href="css/bootstrap.min.css">
+    <link rel="stylesheet" th:href="@{/css/bootstrap-rtl.min.css}" href="css/bootstrap-rtl.min.css">
+    <link rel="stylesheet" th:href="@{/css/vazir.css}" href="css/vazir.css">
+    <link rel="stylesheet" th:href="@{/css/style.css}" href="css/style.css">
+    <link rel="stylesheet" th:href="@{/css/themify-icons.css}" href="css/themify-icons.css">
+    <link rel="stylesheet" th:href="@{/css/login-register.css}" href="css/login-register.css">
+    <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css">
+
+    <meta charset="UTF-8">
+    <title>management project</title>
+</head>
+<!--&lt;!&ndash; hidden logout form&ndash;&gt;-->
+<!--<form sec:authorize="isAuthenticated()" id="logoutForm" name="logoutForm" th:action="@{/logout}" method="post" th:hidden="true">-->
+    <!--<input hidden type="submit" value="Sign Out"/>-->
+<!--</form>-->
+
+<body data-spy="scroll" data-target="#mynavbar" data-offset="10">
+ <div class="nav-menu fixed-top ">
+            <div class="container">
+                <div class="row">
+                    <div class="col">
+                        <nav class="navbar navbar-dark navbar-expand-lg">
+                            <a href="#" class="navbar-brand"><img src=""></a>
+                            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#mynavbar">
+                             <span class="navbar-toggler-icon"></span>
+                            </button>
+                            <div class="collapse navbar-collapse" id="mynavbar">
+                                <ul class="navbar-nav mr-auto">
+                                    <li class="nav-item"><a class="nav-link active" href="#home">صفحه اصلی</a></li>
+                                    <li class="nav-item"><a class="nav-link" th:href="@{/gymlistAll}" href="#gyms">باشگاه ها</a> </li>
+                                    <li class="nav-item" sec:authorize="hasAuthority('READ_ROLE')">
+                                        <a class="nav-link" th:href="@{/rolelistAll}" th:text="#{Roles}"></a>
+                                    </li>
+                                    <li class="nav-item" sec:authorize="hasAuthority('READ_COMPANY')">
+                                        <a class="nav-link" th:href="${'/company/listAll?page=0&size=5'}">اداره‌ ها</a>
+                                    </li>
+                                    <li class="nav-item"><a class="nav-link" href="#followers">همراهان ما</a></li>
+                                    <li class="nav-item"><a class="nav-link" href="#aboutus">درباره ما</a> </li>
+                                    <li class="nav-item"><a class="nav-link" href="#contactus">ارتباط با ما</a> </li>
+                                    <li sec:authorize="isAnonymous()" class="nav-item"><a class="btn btn-outline-light"
+                                        href="#login" data-toggle="modal" data-target="#exampleModal"  onclick="openLoginModal();">  ورود یا ثبت نام</a> </li>
+                                    <li class="nav-item"><a class="btn btn-outline-light" sec:authorize="isAuthenticated()" href="/logout">خروج</a></li>
+                                </ul>
+                            </div>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- login -->
+  
+        <div class="modal fade login" id="loginModal">
+                <div class="modal-dialog login animated">
+                    <div class="modal-content">
+                       <div class="modal-header">
+                          <button type="button" class="close" data-dismiss="modal" aria-hidden="true" style="float: left;position: relative;color: #d54e21; ">&times;</button>
+                          <h6 class="modal-title" style="color: #d54e21;"></h6>
+                      </div>
+                      <div class="modal-body">  
+                          <div class="box">
+                               <div class="content">
+                                  <div class="error"></div>
+                                  <div class="form loginBox">
+                                      <form th:action="@{/login}" method="post" accept-charset="UTF-8">
+                                          <input id="email" class="form-control mb-1 bg-light" placeholder="نام کاربری یا ایمیل" type="text" name="username"/>
+                                          <input id="password" class="form-control bg-light" placeholder="رمز عبور" type="password" name="password"/>
+                                      <!--<input id="email" class="form-control mb-1 bg-light" type="email" placeholder="نام کاربری یا ایمیل" name="email">-->
+                                      <!--<input id="password" class="form-control bg-light" type="password" placeholder="رمز عبور" name="password">-->
+                                      <input class="btn btn-default btn-login btn-signin" type="submit" value="ورود">
+                                      <!--<input class="btn btn-default btn-login btn-signin" type="button" value="ورود" onclick="loginAjax()">-->
+                                      </form>
+                                  </div>
+                               </div>
+                          </div>
+                          <div class="box">
+                              <div class="content registerBox" style="display:none;">
+                               <div class="form">
+                                  <form method="post" html="{:multipart=>true}" data-remote="true" action="/register" accept-charset="UTF-8">
+                                  <input id="email" class="form-control bg-light" type="text" placeholder="ایمیل" name="email">
+                                  <input id="password" class="form-control bg-light" type="password" placeholder="رمز عبور" name="password">
+                                      <input id="passwordmatch" class="form-control bg-light" type="password" placeholder="تکرار رمز عبور" name="passwordmatch">
+                 				<div class="form-check pt-3">
+                                    <label class="form-check-label" for="inlineCheckbox1">ادمین سازمان هستم.</label>
+                                    <input class="form-check-input position-static" type="checkbox" id="blankCheckbox" aria-label="...">
+                                </div>
+                               <div class="form-check pb-3">
+                                    <label class="form-check-label" for="inlineCheckbox2">ادمین باشگاه هستم.</label>
+                                   <input class="form-check-input position-static" type="checkbox" id="blankCheckbox" aria-label="...">
+                               </div>
+								
+								<input class="btn btn-default btn-register btn-signin" type="submit" value="ثبت نام" name="commit">
+                                  
+								  </form>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                      <div class="modal-footer">
+                          <div class="forgot login-footer">
+                              <span> 
+                                   <a href="javascript: showRegisterForm();">ثبت نام نکرده اید؟</a>
+                              </span>
+                          </div>
+                          <div class="forgot register-footer" style="display:none">
+                               <a href="javascript: showLoginForm();">ثبت نام کرده اید؟</a>
+                          </div>
+                      </div>        
+                    </div>
+                </div>
+            </div>
+ <header class="bg-color" id="home">
+            <div class="container mt-4">
+                <h2 style="color: white;">سیستم برونسپاری خدمات</h2>
+                <p class="tagline">برای انتخابی شایسته و آسان به ما بپیوندید.</p>
+            </div>
+            <div class="img-holder mt-3">
+                <img class="col-lg-6 img-fluid" th:src="@{/image/mansporting.png}" src="static/image/mansporting.png">
+            </div>
+
+
+        </header>
+ <div class="ligh-bg section" id="gyms">
+     <div class="container">
+         <div class="section-title text-center">
+             <h3>محبوب ترینها</h3>
+             <p class="caption">در سیستم برونسپاری خدمات، شما میتوانید طبق نیاز و علاقه خود از رشته ها و امکانات باشگاه های ما برخوردار شوید. </p>
+             <p></p>
+         </div>
+         <div class="row">
+             <div class="col-12 col-lg-4">
+                 <div class="card features ">
+                     <img class="card-img-top p-3" th:src="@{/image/gyms/1.jpg}" src="pic/gyms/1.jpg" alt="Card image cap">
+                     <div class="card-body">
+                         <h5 class="card-title">باشگاه بدنسازی</h5>
+                         <p class="card-text">باشگاه 1 مجهز به پیشرفته ترین دستگاههای روز آماده برای ارائه خدمات به آقایان در روزهای زوج و بانوان در روزهای فرد میباشد.</p>
+                         <p class="card-text">رشته های ورزشی: بدنسازی، ایروبیک، ایرومیکس، پیلاتس، آمادگی جسمانی</p>
+                         <p class="card-text">امکانات: ارائه برنامه تمرینی حرفه ای و مبتدی</p>
+                         <p class="card-text">ظرفیت باقی مانده این ترم: 100 نفر</p>
+                         <a class="btn btn-outline-warning mt-3" href="#">اطلاعات بیشتر</a>
+                     </div>
+                 </div>
+             </div>
+
+             <div class="col-12 col-lg-4">
+                 <div class="card features ">
+                     <img class="card-img-top p-3" th:src="@{/image/gyms/1.jpg}" src="pic/gyms/1.jpg" alt="Card image cap">
+                     <div class="card-body">
+                         <h5 class="card-title">باشگاه بدنسازی</h5>
+                         <p class="card-text">باشگاه 1 مجهز به پیشرفته ترین دستگاههای روز آماده برای ارائه خدمات به آقایان در روزهای زوج و بانوان در روزهای فرد میباشد.</p>
+                         <p class="card-text">رشته های ورزشی: بدنسازی، ایروبیک، ایرومیکس، پیلاتس، آمادگی جسمانی</p>
+                         <p class="card-text">امکانات: ارائه برنامه تمرینی حرفه ای و مبتدی</p>
+                         <p class="card-text">ظرفیت باقی مانده این ترم: 100 نفر</p>
+                         <a class="btn btn-outline-warning mt-3" href="#">اطلاعات بیشتر</a>
+                     </div>
+                 </div>
+            </div>
+
+             <div class="col-12 col-lg-4">
+                 <div class="card features ">
+                     <img class="card-img-top p-3" th:src="@{/image/gyms/1.jpg}" src="pic/gyms/1.jpg" alt="Card image cap">
+                     <div class="card-body">
+                         <h5 class="card-title">باشگاه بدنسازی</h5>
+                         <p class="card-text">باشگاه 1 مجهز به پیشرفته ترین دستگاههای روز آماده برای ارائه خدمات به آقایان در روزهای زوج و بانوان در روزهای فرد میباشد.</p>
+                         <p class="card-text">رشته های ورزشی: بدنسازی، ایروبیک، ایرومیکس، پیلاتس، آمادگی جسمانی</p>
+                         <p class="card-text">امکانات: ارائه برنامه تمرینی حرفه ای و مبتدی</p>
+                         <p class="card-text">ظرفیت باقی مانده این ترم: 100 نفر</p>
+                         <a class="btn btn-outline-warning mt-3" href="#">اطلاعات بیشتر</a>
+                     </div>
+                 </div>
+             </div>
+
+             <div class="col-12 text-center pt-5">
+                 <a href="#" class="btn btn-primary">مشاهده تمام باشگاه ها</a>
+             </div>
+         </div>
+     </div>
+ </div>
+<div class="section bg-light" id="followers">
+    <div class="container">
+        <div class="section-title text-center">
+            <h3>همراهان ما</h3>
+            <p class="caption">سیستم برونسپاری خدمات، از مدیران سازمان ها و باشگاه های ورزشی دعوت به همکاری مینماید.</p>
+            <p class="caption"></p>
+        </div>
+
+        <ul class="nav nav-tabs nav-justified">
+
+            <li class="nav-item">
+                <a class="nav-link active" href="#organstab" data-toggle="tab">سازمان ها</a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" href="#gymstab" data-toggle="tab">باشگاه ها</a>
+            </li>
+        </ul>
+        <div class="tab-content">
+            <div class="tab-pane fade show active" id="organstab">
+                <div class="d-flex flex-column flex-lg-row">
+                    <div>
+                        <h4>چگونه با ما همراه شودید؟</h4>
+                        <p class="lead">به سادگی از خدمات ما برخوردار شوید.</p>
+                        <p>طراح گرافیک از این متن به عنوان عنصری از ترکیب بندی برای پر کردن صفحه و ارایه اولیه شکل ظاهری و کلی طرح سفارش گرفته شده استفاده می نماید، تا از نظر گرافیکی نشانگر چگونگی نوع و اندازه فونت و ظاهر متن باشد.</p>
+                        <p>طراح گرافیک از این متن به عنوان عنصری از ترکیب بندی برای پر کردن صفحه و ارایه اولیه شکل ظاهری و کلی طرح سفارش گرفته شده استفاده می نماید، تا از نظر گرافیکی نشانگر چگونگی نوع و اندازه فونت و ظاهر متن باشد.</p>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="tab-pane fade" id="gymstab">
+                <div class="d-flex flex-column flex-lg-row">
+                    <div>
+                        <h4>چگونه با ما همراه شودید؟</h4>
+                        <p class="lead">به سادگی میتوانید برای باشگاه خود بازاریابی نمایید.</p>
+                        <p>طراح گرافیک از این متن به عنوان عنصری از ترکیب بندی برای پر کردن صفحه و ارایه اولیه شکل ظاهری و کلی طرح سفارش گرفته شده استفاده می نماید، تا از نظر گرافیکی نشانگر چگونگی نوع و اندازه فونت و ظاهر متن باشد.</p>
+                        <p>طراح گرافیک از این متن به عنوان عنصری از ترکیب بندی برای پر کردن صفحه و ارایه اولیه شکل ظاهری و کلی طرح سفارش گرفته شده استفاده می نماید، تا از نظر گرافیکی نشانگر چگونگی نوع و اندازه فونت و ظاهر متن باشد.</p>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="text-center pt-5">
+            <a class="btn btn-outline-warning mt-3 text-center" href="#" data-toggle="modal" data-target="#exampleModal"  onclick="openLoginModal();">به ما بپیوندید</a>
+        </div>
+    </div>
+</div>
+<div class="section ligh-bg" id="aboutus">
+    <div class="container">
+        <div class="section-title text-center">
+            <h3>شعار سیستم برونسپاری مدیریت</h3>
+            <p>طراح گرافیک از این متن به عنوان عنصری از ترکیب بندی برای پر کردن صفحه و ارایه اولیه شکل ظاهری و کلی طرح سفارش گرفته شده استفاده می نماید، تا از نظر گرافیکی نشانگر چگونگی نوع و اندازه فونت و ظاهر متن باشد.</p>
+            <p>طراح گرافیک از این متن به عنوان عنصری از ترکیب بندی برای پر کردن صفحه و ارایه اولیه شکل ظاهری و کلی طرح سفارش گرفته شده استفاده می نماید، تا از نظر گرافیکی نشانگر چگونگی نوع و اندازه فونت و ظاهر متن باشد.</p>
+            <p>طراح گرافیک از این متن به عنوان عنصری از ترکیب بندی برای پر کردن صفحه و ارایه اولیه شکل ظاهری و کلی طرح سفارش گرفته شده استفاده می نماید، تا از نظر گرافیکی نشانگر چگونگی نوع و اندازه فونت و ظاهر متن باشد.</p>
+        </div>
+    </div>
+</div>
+ <div class="section bg-light" id="contactus">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6">
+                <p> <span class="ti-location-pin ml-2"></span>زنجان، زنجان،زنجان</p>
+                <div class="d-block d-sm-inline-block">
+                    <p class="mb-2 ml-4">
+                        <a href="gmail@gmail.com">gmail@gimail.com</a><span class="ti-email ml-2"></span>
+                    </p>
+                </div>
+                <div class="d-block d-sm-inline-block">
+                    <p class="mb-2">
+                        <a href="tel:02400000000">tel=02400000000</a><span class="ti-headphone-alt ml-2"></span>
+                    </p>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="social-icons float-left d-flex justify-content-center">
+                    <a href="#"><span class="ti-instagram"></span></a>
+                    <a href="#"><span class="ti-facebook"></span></a>
+                    <a href="#"><span class="ti-twitter-alt"></span></a>
+                </div>
+            </div>
+        </div>
+    </div>
+ </div>
+<footer class="text-center my-5">
+    <p class="small">کلیه حقوق این سایت متعلق به سیستم برونسپاری خدمات میباشد.</p>
+    <a class="small m-2" href="#">اخبار</a>
+    <a class="small m-2" href="#">قوانین</a>
+    <a class="small m-2" href="#">حریم خصوصی</a>
+
+</footer>
+<!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+<!-- Popper JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+
+<!-- Latest compiled JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
+<!-- javaScriptCode -->
+<script th:src="@{/js/script.js}" src="script.js"></script>
+<script th:src="@{/js/login-register.js}" src="login-register.js"></script>
+
+</body>
+</html>

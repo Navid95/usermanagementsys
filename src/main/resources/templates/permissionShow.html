@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <!--/*/<th:block th:include="fragments/head :: head"></th:block>/*/-->
+    <meta charset="UTF-8">
+    <title>Permission Info</title>
+</head>
+<body>
+<!--/*/<th:block th:include="fragments/menuBar :: menuBar"></th:block>/*/-->
+<div class="container">
+
+    <table class="table table-striped">
+        <tr>
+            <th>Permission Name</th>
+            <th>Description</th>
+            <th>Id</th>
+            <th>Created date</th>
+            <th>Last updated date</th>
+        </tr>
+        <tr>
+            <td th:text="${permission.name}"></td>
+            <td th:text="${permission.description}"></td>
+            <td th:text="${permission.id}"></td>
+            <td th:text="${permission.dateCreated}"></td>
+            <td th:text="${permission.dateLastUpdated}"></td>
+        </tr>
+    </table>
+
+</div>
+</body>
+</html>
